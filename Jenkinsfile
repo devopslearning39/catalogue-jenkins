@@ -10,7 +10,9 @@ pipeline {
     }
     stages {
         stage('Dev env build deploy') {
+            steps {
             echo "Hi Jella"
+            }
         }
     }
 }
