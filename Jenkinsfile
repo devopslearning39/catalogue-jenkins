@@ -14,8 +14,8 @@ pipeline {
     }
     stages {
         stage('Fetching the version number') {
-            
-            def packageJson = readJSON file: package.json
+            steps {
+            def packageJson = readJSON file: 'package.json'
             PackageVersion = PackageVersion.version
             echo $PackageVersion
             }
