@@ -22,10 +22,10 @@ pipeline {
                 }
             }
         }
-         stage('Install dependencies') {
+         stage('Build') {
             steps {
                 sh """
-                    npm install
+                    ls -la
                 """
             }
         }
