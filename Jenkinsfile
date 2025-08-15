@@ -26,6 +26,8 @@ pipeline {
             steps {
                 sh """
                     ls -la
+                    zip -r catalogue.zip ./* -x "*.git" -x "*.zip" -x "Jenkinfile"
+                    ls -ltr
                 """
             }
         }
