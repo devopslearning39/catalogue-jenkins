@@ -5,13 +5,19 @@ pipeline {
         }
     }
 
+    environment {
+        PackageVersion = ''
+    }
+
     options {
         ansiColor('xterm')
     }
     stages {
-        stage('Dev env build deploy') {
-            steps {
-            echo "Hi Jella.."
+        stage('Fetching the version number') {
+            
+            def packageJson = readJSON file: package.json
+            PackageVersion = PackageVersion.version
+            echo $PackageVersion
             }
         }
     }
