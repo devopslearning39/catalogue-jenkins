@@ -13,14 +13,14 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-        stage('Fetching the version number') {
+        stage('Get the version') {
             steps {
                 script {
-                def packageJson = readJSON file: 'package.json'
-                env.PackageVersion = packageJson.version
-                echo "Package version is : ${env.PackageVersion}"
+                    def packageJson = readJSON file: 'package.json'
+                    packageVersion = packageJson.version
+                    echo "application version: $packageVersion"
+                }
             }
-          }
         }
     }
 }
