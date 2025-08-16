@@ -12,49 +12,51 @@ pipeline {
     options {
         ansiColor('xterm')
     }
+
     stages {
         stage('Get the version') {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
-                    PackageVersion = packageJson.version
-                    echo "application version: $PackageVersion"
+                    env.PackageVersion = packageJson.version
+                    echo "application version: ${env.PackageVersion}"
                 }
             }
         }
+
         stage('Install dependencies') {
             steps {
-                sh '''
-                    npm install
-                '''
+                sh 'npm install'
             }
         }
+
         stage('Build') {
             steps {
                 sh '''
                     ls -la
-                    zip -q -r catalogue.zip ./* -x "*.git" -x "*.zip" -x "Jenkinsfile"
+                    zip -q -r catalogue.zip ./* -x "*.git*" -x "*.zip" -x "Jenkinsfile"
                     ls -ltr
                 '''
             }
         }
+
         stage('Artifact upload to Nexus') {
             steps {
                 nexusArtifactUploader(
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                nexusUrl: '13.217.13.39:8081',
-                groupId: 'com.roboshop',
-                version: "${PackageVersion}",
-                repository: 'catalogue',
-                credentialsId: 'nexus-auth',
-                artifacts: [
-                    [artifactId: 'catalogue',
-                    classifier: '',
-                    file: 'catalogue.zip',
-                    type: 'zip']
-                ]
-              )
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '13.217.13.39:8081',
+                    groupId: 'com.roboshop',
+                    version: "${env.PackageVersion}",
+                    repository: 'catalogue',
+                    credentialsId: 'nexus-auth',
+                    artifacts: [[
+                        artifactId: 'catalogue',
+                        classifier: '',
+                        file: 'catalogue.zip',
+                        type: 'zip'
+                    ]]
+                )
             }
         }
 
@@ -62,11 +64,11 @@ pipeline {
             steps {
                 script {
                     echo 'Triggering job for pipeline catalogue-deploy'
-                    build job: 'catalogue-deploy', wait: true
-                parameters: [
-                    string(name: 'version', value: "${PackageVersion}"),
-                // string(name: 'complex_param', value: 'prefix-' + String.valueOf(BUILD_NUMBER))
-                ]
+                    build job: 'catalogue-deploy',
+                        wait: true,
+                        parameters: [
+                            string(name: 'version', value: "${env.PackageVersion}")
+                        ]
                 }
             }
         }
@@ -74,14 +76,14 @@ pipeline {
 
     post {
         always {
-            echo 'This will invoke all the time of jenkins execution..'
-            deleteDir()     //This used to delete the zip file in node agent once the artifact uploaded to into Nexus repo (To reduce the memory in node)
+            echo 'This will invoke all the time of Jenkins execution...'
+            deleteDir() // Clean up to reduce workspace memory
         }
         failure {
-            echo 'Jella, build got failed, Please check!'
+            echo 'Jella, build got failed, please check!'
         }
         success {
-            echo 'Booom!!!, Jella build executed successfully.'
+            echo 'Booom!!! Jella build executed successfully.'
         }
     }
 }
