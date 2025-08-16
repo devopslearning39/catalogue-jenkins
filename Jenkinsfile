@@ -58,10 +58,10 @@ pipeline {
             deleteDir()
         }
         failure { 
-            echo 'I will always say Hello again!'
+            echo 'Jella, build got failed, Please check!'
         }
         success { 
-            echo 'This will invoke script executed successfully..'
+            echo 'Booom!!!, Jella build executed successfully.'
         }
     }
 }
