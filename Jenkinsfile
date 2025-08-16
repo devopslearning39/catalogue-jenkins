@@ -17,8 +17,8 @@ pipeline {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
-                    packageVersion = packageJson.version
-                    echo "application version: $packageVersion"
+                    PackageVersion = packageJson.version
+                    echo "application version: $PackageVersion"
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
                 protocol: 'http',
                 nexusUrl: '13.217.13.39:8081',
                 groupId: 'com.roboshop',
-                version: "${packageVersion}",
+                version: "${PackageVersion}",
                 repository: 'catalogue',
                 credentialsId: 'nexus-auth',
                 artifacts: [
