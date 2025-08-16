@@ -62,7 +62,7 @@ pipeline {
     post {
         always { 
             echo 'This will invoke all the time of jenkins execution..'
-            // deleteDir()
+            deleteDir()
         }
         failure { 
             echo 'Jella, build got failed, Please check!'
