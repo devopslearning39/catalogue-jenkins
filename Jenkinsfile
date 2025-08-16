@@ -63,13 +63,11 @@ pipeline {
         stage('Invoking deploy pipeline job') {
             steps {
                 script {
-                    echo 'Triggering job for pipeline catalogue-deploy'
-                    echo "Jelllaa  ${PackageVersion}"
-                    build job: 'catalogue-deploy',
-                        wait: true,
-                        parameters: [
-                            string(name: 'version', value: "${PackageVersion}")
+                        def params = [
+                            string(name: 'version', value: "$packageVersion"),
+                            string(name: 'environment', value: "dev")
                         ]
+                        build job: "catalogue-deploy", wait: true, parameters: params
                 }
             }
         }
