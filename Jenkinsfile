@@ -62,7 +62,7 @@ pipeline {
     post {
         always { 
             echo 'This will invoke all the time of jenkins execution..'
-            deleteDir()
+            deleteDir()     //This used to delete the zip file in node agent once the artifact uploaded to into Nexus repo (To reduce the memory in node)
         }
         failure { 
             echo 'Jella, build got failed, Please check!'
