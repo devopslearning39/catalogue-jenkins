@@ -24,18 +24,18 @@ pipeline {
         }
         stage('Install dependencies') {
             steps {
-                sh """
+                sh '''
                     npm install
-                """
+                '''
             }
         }
-         stage('Build') {
+        stage('Build') {
             steps {
-                sh """
+                sh '''
                     ls -la
                     zip -q -r catalogue.zip ./* -x "*.git" -x "*.zip" -x "Jenkinsfile"
                     ls -ltr
-                """
+                '''
             }
         }
         stage('Artifact upload to Nexus') {
@@ -51,38 +51,36 @@ pipeline {
                 artifacts: [
                     [artifactId: 'catalogue',
                     classifier: '',
-                    file: "catalogue.zip",
+                    file: 'catalogue.zip',
                     type: 'zip']
                 ]
               )
             }
-          }
+        }
 
         stage('Invoking deploy pipeline job') {
-        steps {
-            script {
-                echo "Triggering job for pipeline catalogue-deploy"
-                build job: "catalogue-deploy", wait: true
+            steps {
+                script {
+                    echo 'Triggering job for pipeline catalogue-deploy'
+                    build job: 'catalogue-deploy', wait: true
                 parameters: [
                     string(name: 'Version is : ', value: "${packageVersion}"),
-                    // string(name: 'complex_param', value: 'prefix-' + String.valueOf(BUILD_NUMBER))
+                // string(name: 'complex_param', value: 'prefix-' + String.valueOf(BUILD_NUMBER))
                 ]
+                }
             }
         }
-        }
-        }
-
-        
+    }
 
     post {
-        always { 
+        always {
             echo 'This will invoke all the time of jenkins execution..'
             deleteDir()     //This used to delete the zip file in node agent once the artifact uploaded to into Nexus repo (To reduce the memory in node)
         }
-        failure { 
+        failure {
             echo 'Jella, build got failed, Please check!'
         }
-        success { 
+        success {
             echo 'Booom!!!, Jella build executed successfully.'
         }
     }
