@@ -32,4 +32,17 @@ pipeline {
             }
         }
     }
+
+    post { 
+        always { 
+            echo 'This will invoke all the time of jenkins execution..'
+            deleteDir()
+        }
+        failure { 
+            echo 'I will always say Hello again!'
+        }
+        success { 
+            echo 'This will invoke script executed successfully..'
+        }
+    }
 }
