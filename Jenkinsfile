@@ -64,10 +64,11 @@ pipeline {
             steps {
                 script {
                     echo 'Triggering job for pipeline catalogue-deploy'
+                    echo "Jelllaa  "${PackageVersion}""
                     build job: 'catalogue-deploy',
                         wait: true,
                         parameters: [
-                            string(name: 'version', value: "${env.PackageVersion}")
+                            string(name: 'version', value: "${PackageVersion}")
                         ]
                 }
             }
