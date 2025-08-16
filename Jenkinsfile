@@ -65,8 +65,9 @@ pipeline {
                         echo "Triggering job for pipeline catalogue-deploy"
                         build job: "catalogue-deploy", wait: true
                         parameters: [
-                            string(name: 'Version is : ', value: "${packageVersion}")
+                            string(name: 'Version is : ', value: "${packageVersion}"),
                             // string(name: 'complex_param', value: 'prefix-' + String.valueOf(BUILD_NUMBER))
+                        ]
                 }
             }
         }
