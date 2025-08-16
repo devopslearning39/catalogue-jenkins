@@ -64,7 +64,7 @@ pipeline {
             steps {
                 script {
                     echo 'Triggering job for pipeline catalogue-deploy'
-                    build job: 'catalogue-deploy', 
+                    build job: 'catalogue-deploy',
                         wait: true,
                         parameters: [
                             string(name: 'version', value: "${PackageVersion}")
