@@ -61,8 +61,8 @@ pipeline {
         stage('Invoking deploy pipeline job') {
             steps {
                 script {
-                    echo 'Triggering job for pipeline catalogue-deploy-jenkins'
-                    build job: 'catalogue-deploy-jenkins', wait: true
+                    echo 'Triggering job for pipeline catalogue-deploy'
+                    build job: 'catalogue-deploy', wait: true
                 parameters: [
                     string(name: 'Version is : ', value: "${packageVersion}"),
                 // string(name: 'complex_param', value: 'prefix-' + String.valueOf(BUILD_NUMBER))
