@@ -17,11 +17,12 @@ pipeline {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
-                    packageVersion = packageJson.version
-                    echo "application version: $packageVersion"
+                    env.packageVersion = packageJson.version
+                    echo "application version: ${env.packageVersion}"
                 }
             }
         }
+
         stage('Install dependencies') {
             steps {
                 sh '''
@@ -45,7 +46,7 @@ pipeline {
                 protocol: 'http',
                 nexusUrl: '13.217.13.39:8081',
                 groupId: 'com.roboshop',
-                version: "${packageVersion}",
+                version: "${env.packageVersion}",
                 repository: 'catalogue',
                 credentialsId: 'nexus-auth',
                 artifacts: [
