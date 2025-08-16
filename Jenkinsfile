@@ -60,11 +60,6 @@ pipeline {
         }
 
         stage('Invoking deploy pipeline job') {
-            when {
-                expression{
-                    params.Deploy == 'true'
-                }
-            }
             steps {
                 script {
                     def params = [
