@@ -26,7 +26,7 @@ pipeline {
             steps {
                 sh """
                     ls -la
-                    zip -q -r catalogue.zip ./* -x "*.git" -x "*.zip" -x "Jenkinfile"
+                    zip -q -r catalogue.zip ./* -x "*.git" -x "*.zip" -x "Jenkinsfile"
                     ls -ltr
                 """
             }
