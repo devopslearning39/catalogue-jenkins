@@ -31,9 +31,28 @@ pipeline {
                 """
             }
         }
+        stage('Artifact upload to Nexus') {
+            steps {
+                nexusArtifactUploader(
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                nexusUrl: '13.217.13.39:8081',
+                groupId: 'com.roboshop',
+                version: "{$packageVersion}",
+                repository: 'catalogue',
+                credentialsId: 'nexus-auth',
+                artifacts: [
+                    [artifactId: catalogue,
+                    classifier: '',
+                    file: "catalogue.zip,
+                    type: 'zip']
+                ]
+              )
+            }
+        }
     }
 
-    post { 
+    post {
         always { 
             echo 'This will invoke all the time of jenkins execution..'
             deleteDir()
